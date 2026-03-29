@@ -65,11 +65,14 @@
     border-bottom: 1px solid rgba(201,146,74,0.15);
   }
   .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem; letter-spacing: .12em;
-    color: var(--bronze); text-decoration: none;
+    text-decoration: none;
+    display: flex; align-items: center;
   }
-  .nav-logo span { color: var(--green); }
+  .nav-logo img {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
   .nav-links { display: flex; gap: 2.2rem; list-style: none; }
   .nav-links a {
     text-decoration: none; color: var(--white);
@@ -607,7 +610,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#hero">V.O<span>.</span> Custom Painting</a>
+  <a class="nav-logo" href="#hero"><img src="../Logo V.O 2.0.jpeg" alt="V.O Custom Painting" /></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
