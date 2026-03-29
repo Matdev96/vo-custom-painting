@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>V.O Custom Painting – Ireland</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black:   #111111;
+    --charcoal:#1c1c1c;
+    --bronze:  #c9924a;
+    --gold:    #d4a855;
+    --green:   #6aab6e;
+    --white:   #f5f2ee;
+    --muted:   #888888;
+    --wa:      #25D366;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--bronze); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(17,17,17,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,146,74,0.15);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; letter-spacing: .12em;
+    color: var(--bronze);
+  }
+  .nav-logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--white);
+    font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+    transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--bronze); }
+  .nav-cta {
+    background: var(--wa); color: #fff;
+    padding: .55rem 1.4rem; border-radius: 2rem;
+    font-size: .82rem; font-weight: 600; letter-spacing: .05em;
+    text-decoration: none; transition: opacity .25s;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .nav-cta:hover { opacity: .85; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    background:
+      linear-gradient(160deg, rgba(106,171,110,.08) 0%, transparent 50%),
+      linear-gradient(to bottom, rgba(17,17,17,0) 60%, var(--black) 100%),
+      var(--charcoal);
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(201,146,74,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,146,74,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(106,171,110,.12) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 1.5rem;
+    animation: fadeUp .9s ease both;
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid rgba(201,146,74,.4);
+    color: var(--bronze); font-size: .75rem; letter-spacing: .2em;
+    text-transform: uppercase; padding: .4rem 1.2rem; border-radius: 2rem;
+    margin-bottom: 2rem;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.05; font-weight: 900;
+    margin-bottom: 1.2rem;
+  }
+  .hero-title .line-bronze { color: var(--bronze); display: block; }
+  .hero-title .line-green  { color: var(--green);  display: block; }
+  .hero-tagline {
+    font-size: clamp(.95rem, 2vw, 1.15rem);
+    color: rgba(245,242,238,.65); font-weight: 300;
+    letter-spacing: .04em; margin-bottom: 2.8rem; max-width: 480px; margin-inline: auto;
+  }
+  .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-wa {
+    background: var(--wa); color: #fff;
+    padding: .9rem 2rem; border-radius: 2rem;
+    font-size: .9rem; font-weight: 600; letter-spacing: .06em;
+    text-decoration: none; display: flex; align-items: center; gap: .55rem;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 24px rgba(37,211,102,.25);
+  }
+  .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,211,102,.35); }
+  .btn-outline {
+    border: 1px solid rgba(201,146,74,.5); color: var(--bronze);
+    padding: .9rem 2rem; border-radius: 2rem;
+    font-size: .9rem; font-weight: 500; letter-spacing: .06em;
+    text-decoration: none; transition: background .2s, color .2s;
+  }
+  .btn-outline:hover { background: var(--bronze); color: var(--black); }
+  .hero-stats {
+    display: flex; gap: 3rem; justify-content: center;
+    margin-top: 4rem; flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--bronze);
+  }
+  .stat-label { font-size: .78rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-top: .2rem; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 7rem 3rem; }
+  .section-tag {
+    font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--green); margin-bottom: .8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+    line-height: 1.15; margin-bottom: 1.2rem;
+  }
+  .section-title em { color: var(--bronze); font-style: normal; }
+  .section-sub {
+    font-size: 1rem; color: rgba(245,242,238,.6);
+    max-width: 520px; line-height: 1.75;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--charcoal); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .about-img-wrap {
+    position: relative;
+  }
+  .about-img-placeholder {
+    width: 100%; aspect-ratio: 4/5;
+    background: linear-gradient(135deg, #222 0%, #2a2a2a 100%);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(201,146,74,.15);
+    position: relative; overflow: hidden;
+  }
+  .about-img-placeholder::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(106,171,110,.06) 0%, rgba(201,146,74,.06) 100%);
+  }
+  .about-img-placeholder .placeholder-icon {
+    font-size: 5rem; opacity: .18;
+  }
+  .about-accent {
+    position: absolute; bottom: -1.5rem; right: -1.5rem;
+    width: 160px; height: 160px;
+    background: linear-gradient(135deg, var(--bronze), var(--gold));
+    border-radius: 2px; z-index: -1; opacity: .35;
+  }
+  .about-pills { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 2rem; }
+  .pill {
+    border: 1px solid rgba(201,146,74,.3);
+    color: var(--bronze); padding: .4rem 1rem;
+    border-radius: 2rem; font-size: .8rem; letter-spacing: .08em;
+  }
+  .pill.green { border-color: rgba(106,171,110,.4); color: var(--green); }
+
+  /* ── SERVICES ── */
+  #services { background: var(--black); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5px; margin-top: 3.5rem;
+    border: 1.5px solid rgba(201,146,74,.12);
+  }
+  .service-card {
+    padding: 2.5rem 2rem;
+    background: var(--charcoal);
+    border: 1.5px solid rgba(201,146,74,.07);
+    transition: background .25s, border-color .25s;
+    cursor: default;
+  }
+  .service-card:hover { background: #232323; border-color: rgba(201,146,74,.25); }
+  .service-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .service-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: .6rem; color: var(--white);
+  }
+  .service-desc { font-size: .88rem; color: rgba(245,242,238,.55); line-height: 1.7; }
+
+  /* ── WORK / GALLERY ── */
+  #work { background: var(--charcoal); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem; margin-top: 3.5rem;
+  }
+  .gallery-item {
+    background: #222;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 1/1;
+    border: 1px solid rgba(201,146,74,.1);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .3s;
+  }
+  .gallery-item:hover { transform: scale(1.02); }
+  .gallery-item.tall { grid-row: span 2; aspect-ratio: auto; }
+  .gallery-item.wide { grid-column: span 2; aspect-ratio: 16/9; }
+  .gallery-placeholder {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: .5rem;
+    color: rgba(245,242,238,.15); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+  }
+  .gallery-placeholder .g-icon { font-size: 2.5rem; opacity: .2; }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(17,17,17,.85) 0%, transparent 60%);
+    opacity: 0; transition: opacity .3s;
+    display: flex; align-items: flex-end; padding: 1.2rem;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-label { font-size: .82rem; color: var(--bronze); letter-spacing: .08em; }
+
+  .work-cta { text-align: center; margin-top: 3rem; }
+
+  /* ── VIDEO ── */
+  #video-section { background: var(--black); padding: 5rem 3rem; }
+  .video-wrap {
+    max-width: 900px; margin: 3rem auto 0;
+    border: 1px solid rgba(201,146,74,.2);
+    border-radius: 4px; overflow: hidden;
+    background: #1a1a1a;
+    aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .video-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    color: rgba(245,242,238,.2);
+  }
+  .video-play { font-size: 4rem; }
+  .video-hint { font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--charcoal); }
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem; margin-top: 3.5rem;
+  }
+  .review-card {
+    background: var(--black);
+    border: 1px solid rgba(201,146,74,.12);
+    border-radius: 2px; padding: 2rem;
+    transition: border-color .25s;
+  }
+  .review-card:hover { border-color: rgba(201,146,74,.3); }
+  .stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; letter-spacing: .1em; }
+  .review-text {
+    font-size: .92rem; line-height: 1.8;
+    color: rgba(245,242,238,.7); margin-bottom: 1.4rem;
+    font-style: italic;
+  }
+  .reviewer { display: flex; align-items: center; gap: .8rem; }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--bronze), var(--green));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .85rem; color: var(--black);
+    flex-shrink: 0;
+  }
+  .reviewer-name { font-size: .9rem; font-weight: 600; }
+  .reviewer-loc { font-size: .75rem; color: var(--muted); }
+
+  /* ── CTA FINAL ── */
+  #cta-final {
+    background: var(--charcoal);
+    text-align: center; padding: 8rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  #cta-final::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(106,171,110,.08) 0%, transparent 65%),
+      linear-gradient(135deg, rgba(201,146,74,.04) 0%, transparent 60%);
+  }
+  .cta-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; letter-spacing: .15em; color: var(--bronze);
+    margin-bottom: 1.5rem;
+  }
+  .cta-logo span { color: var(--green); }
+  #cta-final .section-title { position: relative; }
+  .cta-desc {
+    font-size: 1rem; color: rgba(245,242,238,.55);
+    max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.75;
+  }
+  .cta-contacts {
+    display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 2.5rem;
+  }
+  .cta-contact-item {
+    display: flex; align-items: center; gap: .5rem;
+    font-size: .85rem; color: var(--muted);
+  }
+  .cta-contact-item a { color: var(--bronze); text-decoration: none; }
+  .cta-contact-item a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(201,146,74,.1);
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: .95rem; letter-spacing: .12em; color: var(--bronze);
+  }
+  .footer-logo span { color: var(--green); }
+  .footer-copy { font-size: .75rem; color: var(--muted); }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--wa);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none; font-size: 1.7rem;
+    box-shadow: 0 4px 24px rgba(37,211,102,.4);
+    transition: transform .2s, box-shadow .2s;
+    animation: pulse 2.5s infinite;
+  }
+  .wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 36px rgba(37,211,102,.55); animation: none; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,146,74,.3), transparent);
+    margin: 0 3rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,.4); }
+    50%       { box-shadow: 0 4px 40px rgba(37,211,102,.7); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .gallery-grid { grid-template-columns: repeat(2,1fr); }
+    .gallery-item.wide { grid-column: span 1; aspect-ratio: 1/1; }
+    .gallery-item.tall { grid-row: span 1; aspect-ratio: 1/1; }
+    footer { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 500px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">V.O<span>.</span> Custom Painting</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Our Work</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a class="nav-cta" href="https://wa.me/353831037742?text=Hi%20Vinicius!%20I'd%20like%20a%20free%20quote." target="_blank">
+    📱 Get a Free Quote
+  </a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🇮🇪 Based in Ireland · Professional Painter</div>
+    <h1 class="hero-title">
+      <span class="line-bronze">V.O Custom</span>
+      <span class="line-green">Painting</span>
+    </h1>
+    <p class="hero-tagline">Elevating spaces with exceptional craftsmanship. Interior & exterior painting across Ireland.</p>
+    <div class="hero-ctas">
+      <a class="btn-wa" href="https://wa.me/353831037742?text=Hi%20Vinicius!%20I'd%20like%20a%20free%20quote." target="_blank">
+        💬 WhatsApp Us
+      </a>
+      <a class="btn-outline" href="#work">See Our Work</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Satisfaction</div></div>
+      <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Rated</div></div>
+      <div class="stat"><div class="stat-num">Fast</div><div class="stat-label">Response</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-img-placeholder">
+          <span class="placeholder-icon">🖌️</span>
+        </div>
+        <div class="about-accent"></div>
+      </div>
+      <div class="reveal">
+        <p class="section-tag">— Who We Are</p>
+        <h2 class="section-title">Vinicius Oliveira<br><em>Owner & Operator</em></h2>
+        <p class="section-sub">With a passion for precision and an eye for detail, Vinicius brings professional-grade painting services to homes and businesses across Ireland. Every project is treated with the same care and craftsmanship — no job too big or too small.</p>
+        <div class="about-pills">
+          <span class="pill">Interior Painting</span>
+          <span class="pill">Exterior Painting</span>
+          <span class="pill green">Fully Insured</span>
+          <span class="pill green">Free Quotes</span>
+          <span class="pill">Based in Ireland</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-tag">— What We Do</p>
+      <h2 class="section-title">Our <em>Services</em></h2>
+      <p class="section-sub">From a single room to a full house — we handle every surface with care.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">🏠</div>
+        <div class="service-title">Interior Painting</div>
+        <div class="service-desc">Walls, ceilings, hallways and more. Clean finishes with premium paint products.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌿</div>
+        <div class="service-title">Exterior Painting</div>
+        <div class="service-desc">Weather-resistant coatings to protect and beautify your property's façade.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🚪</div>
+        <div class="service-title">Doors & Trim</div>
+        <div class="service-desc">Doors, skirting boards, handrails, and architraves painted to a flawless finish.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🗄️</div>
+        <div class="service-title">Cabinet Painting</div>
+        <div class="service-desc">Transform your kitchen or wardrobe cabinets without the cost of replacement.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <div class="service-title">Filler & Repairs</div>
+        <div class="service-desc">Wall preparation, crack filling and surface repairs before any painting begins.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏚️</div>
+        <div class="service-title">Attic & Specialist Areas</div>
+        <div class="service-desc">Attic spaces, garages, and hard-to-reach areas done properly and safely.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OUR WORK -->
+<section id="work">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-tag">— Portfolio</p>
+      <h2 class="section-title">Our <em>Work</em></h2>
+      <p class="section-sub">Every project tells a story. Browse a selection of our recent work across Ireland.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item tall">
+        <div class="gallery-placeholder"><span class="g-icon">🖼️</span>Add Photo</div>
+        <div class="gallery-overlay"><span class="gallery-label">Interior Painting</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="g-icon">🖼️</span>Add Photo</div>
+        <div class="gallery-overlay"><span class="gallery-label">Ceiling Work</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="g-icon">🖼️</span>Add Photo</div>
+        <div class="gallery-overlay"><span class="gallery-label">Exterior</span></div>
+      </div>
+      <div class="gallery-item wide">
+        <div class="gallery-placeholder"><span class="g-icon">🖼️</span>Add Photo</div>
+        <div class="gallery-overlay"><span class="gallery-label">Full Room – Before &amp; After</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="g-icon">🖼️</span>Add Photo</div>
+        <div class="gallery-overlay"><span class="gallery-label">Cabinet Painting</span></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="g-icon">🖼️</span>Add Photo</div>
+        <div class="gallery-overlay"><span class="gallery-label">Trim &amp; Doors</span></div>
+      </div>
+    </div>
+    <div class="work-cta reveal">
+      <a class="btn-wa" href="https://wa.me/353831037742?text=Hi!%20I%20saw%20your%20work%20and%20I'd%20love%20a%20quote." target="_blank" style="display:inline-flex;">
+        💬 Want results like these? Talk to us
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- VIDEO -->
+<section id="video-section">
+  <div class="container reveal">
+    <p class="section-tag" style="text-align:center">— Watch Us Work</p>
+    <h2 class="section-title" style="text-align:center">See the <em>Process</em></h2>
+    <div class="video-wrap">
+      <div class="video-placeholder">
+        <span class="video-play">▶</span>
+        <span class="video-hint">Add your Instagram Reel or YouTube video here</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-tag">— What Clients Say</p>
+      <h2 class="section-title">Real <em>Reviews</em></h2>
+    </div>
+    <div class="reviews-grid reveal">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Vinicius did an incredible job painting our entire house. Neat, professional and finished ahead of schedule. Highly recommend!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">SM</div>
+          <div>
+            <div class="reviewer-name">Sarah M.</div>
+            <div class="reviewer-loc">Dublin, Ireland</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"The kitchen cabinets look brand new! Great attention to detail and very fair pricing. Will definitely call again."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">JK</div>
+          <div>
+            <div class="reviewer-name">James K.</div>
+            <div class="reviewer-loc">Cork, Ireland</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Transformed our living room completely. Clean work, no mess left behind. A true professional — couldn't be happier."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">AR</div>
+          <div>
+            <div class="reviewer-name">Aoife R.</div>
+            <div class="reviewer-loc">Galway, Ireland</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA FINAL -->
+<section id="cta-final">
+  <div class="cta-logo reveal">V.O<span>.</span> Custom Painting</div>
+  <h2 class="section-title reveal">Ready to Transform<br>Your <em>Space?</em></h2>
+  <p class="cta-desc reveal">Get in touch today for a free, no-obligation quote. We respond fast — usually within the hour.</p>
+  <div class="reveal">
+    <a class="btn-wa" href="https://wa.me/353831037742?text=Hi%20Vinicius!%20I'd%20like%20a%20free%20quote." target="_blank" style="display:inline-flex; font-size:1rem; padding:1rem 2.5rem;">
+      💬 Get a Free Quote on WhatsApp
+    </a>
+  </div>
+  <div class="cta-contacts reveal">
+    <div class="cta-contact-item">📞 <a href="tel:+353831037742">+353 083 103 7742</a></div>
+    <div class="cta-contact-item">📸 <a href="https://instagram.com/v.o_custom_painting" target="_blank">@v.o_custom_painting</a></div>
+    <div class="cta-contact-item">🌐 <a href="#">www.vocustompainting.com</a></div>
+    <div class="cta-contact-item">✉️ <a href="mailto:v.ocustompainting@gmail.com">v.ocustompainting@gmail.com</a></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">V.O<span>.</span> Custom Painting</div>
+  <div class="footer-copy">© 2025 V.O Custom Painting. All rights reserved. Ireland.</div>
+</footer>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<a class="wa-float" href="https://wa.me/353831037742?text=Hi%20Vinicius!%20I'd%20like%20a%20free%20quote." target="_blank" title="Chat on WhatsApp">💬</a>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
